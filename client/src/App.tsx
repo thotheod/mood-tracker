@@ -8,7 +8,15 @@ const API_URL = "http://localhost:4000/moods";
 
 const App: React.FC = () => {
   const [moods, setMoods] = useState<Mood[]>([]);
-  const [isDark, setIsDark] = useState(false);
+  const [isDark, setIsDark] = useState(() => {
+    // Load theme preference from localStorage on initial render
+    try {
+      const savedTheme = localStorage.getItem('mood-tracker-theme');
+      return savedTheme === 'dark';
+    } catch {
+      return false; // Fallback for SSR or localStorage unavailable
+    }
+  });
 
   useEffect(() => {
     fetch(API_URL)
@@ -18,10 +26,18 @@ const App: React.FC = () => {
   }, []);
 
   useEffect(() => {
+    // Apply theme to document and save to localStorage
     if (isDark) {
       document.documentElement.classList.add('dark');
     } else {
       document.documentElement.classList.remove('dark');
+    }
+    
+    // Save theme preference to localStorage
+    try {
+      localStorage.setItem('mood-tracker-theme', isDark ? 'dark' : 'light');
+    } catch {
+      // Ignore localStorage errors (e.g., in private browsing mode)
     }
   }, [isDark]);
 
