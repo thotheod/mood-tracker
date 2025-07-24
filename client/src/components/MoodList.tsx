@@ -17,7 +17,13 @@ const MoodList: React.FC<MoodListProps> = ({ moods }) => (
           <div className="flex justify-between items-center">
             <span className="font-medium text-gray-800 dark:text-white">{m.mood}</span>
             <span className="text-sm text-gray-500 dark:text-gray-400">
-              {new Date(m.date).toLocaleDateString()}
+              {new Date(m.date).toLocaleString(undefined, {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+              })}
             </span>
           </div>
           {m.note && (

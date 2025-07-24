@@ -1,22 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { SunIcon, MoonIcon } from '@heroicons/react/24/solid';
 
-const ThemeToggle: React.FC = () => {
-  const [theme, setTheme] = useState<string>('dark');
+interface ThemeToggleProps {
+  isDark: boolean;
+  setIsDark: (isDark: boolean) => void;
+}
 
-  useEffect(() => {
-    // Initialize with dark theme
-    document.documentElement.classList.add('dark');
-    document.documentElement.setAttribute('data-theme', theme);
-  }, []);
-
+const ThemeToggle: React.FC<ThemeToggleProps> = ({ isDark, setIsDark }) => {
   const toggleTheme = () => {
-    setTheme((prevTheme) => {
-      const newTheme = prevTheme === 'light' ? 'dark' : 'light';
-      document.documentElement.classList.toggle('dark');
-      document.documentElement.setAttribute('data-theme', newTheme);
-      return newTheme;
-    });
+    setIsDark(!isDark);
   };
 
   return (
@@ -25,7 +17,7 @@ const ThemeToggle: React.FC = () => {
       className="fixed top-4 right-4 p-2 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
       aria-label="Toggle theme"
     >
-      {theme === 'light' ? (
+      {!isDark ? (
         <SunIcon className="h-6 w-6 text-yellow-500" />
       ) : (
         <MoonIcon className="h-6 w-6 text-gray-700" />
