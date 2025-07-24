@@ -9,7 +9,7 @@ router.get("/moods", async (req: Request, res: Response<Mood[]>) => {
     const moods = await readMoods();
     res.json(moods);
   } catch {
-    res.status(500).json([]);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 });
 
