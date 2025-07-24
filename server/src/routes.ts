@@ -16,11 +16,11 @@ router.get("/moods", async (req: Request, res: Response<Mood[]>) => {
 router.post("/moods", async (req: Request, res: Response<Mood>) => {
   try {
     const { mood, note, date } = req.body;
-    if (!mood || !date) return res.status(400).json(null as any);
+    if (!mood || !date) return res.status(400).json({ error: "Mood and date are required." });
     const newMood = await writeMood({ mood, note, date });
     res.json(newMood);
   } catch {
-    res.status(500).json(null as any);
+    res.status(500).json({ error: "Internal server error." });
   }
 });
 
