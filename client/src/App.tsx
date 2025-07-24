@@ -8,7 +8,11 @@ const API_URL = "http://localhost:4000/moods";
 
 const App: React.FC = () => {
   const [moods, setMoods] = useState<Mood[]>([]);
-  const [isDark, setIsDark] = useState(false);
+  const [isDark, setIsDark] = useState(() => {
+    // Initialize theme from localStorage, default to false if not found
+    const savedTheme = localStorage.getItem('theme');
+    return savedTheme === 'dark';
+  });
 
   useEffect(() => {
     fetch(API_URL)
@@ -18,10 +22,13 @@ const App: React.FC = () => {
   }, []);
 
   useEffect(() => {
+    // Apply theme to document and save to localStorage
     if (isDark) {
       document.documentElement.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
     } else {
       document.documentElement.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
     }
   }, [isDark]);
 
@@ -40,7 +47,7 @@ const App: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-gray-900 py-8 px-4" id="root">
       <div className="max-w-2xl mx-auto">
-        <ThemeToggle />
+        <ThemeToggle isDark={isDark} setIsDark={setIsDark} />
         <h1 className="text-3xl font-bold text-center mb-8 text-gray-800 dark:text-white">
           Mood Tracker
         </h1>
