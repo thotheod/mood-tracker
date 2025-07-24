@@ -84,5 +84,8 @@ obj/
 # Ignore all files inside the .vscode directory
 .vscode/
 
+# Vite temp files
+.vite/
+
 # Ignore any files with the format xxxlocal.xxx
 *local.*
